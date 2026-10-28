@@ -70,16 +70,6 @@ dice-roll/
 └── README.md
 ```
 
-## Setup
-
-To run this website on your computer:
-
-1. Open https://github.com/Adityapc-cs/Dice_Roll
-2. Click the green **Code** button.
-3. Select **Download ZIP**.
-4. Right-click the downloaded ZIP file and select **Extract All**.
-5. Open the extracted folder.
-6. Double-click `index.html` to open the website in your browser.
 
 
 ## How the randomness is generated
@@ -107,15 +97,14 @@ The faces shown during the animation are only for show. The real result is gener
 4. `showHistory()` redraws the history list from the saved rolls.
 5. `addToStats()` counts each face, and `showStats()` updates the rolls, the average and the bar heights.
 
-## Publishing to GitHub
+## Setup
 
-```bash
-git init
-git add .
-git commit -m "Add dice roll website"
-git branch -M main
-git remote add origin <your-repo-url>
-git push -u origin main
-```
+To run this website on your computer:
 
-Then turn on **Settings → Pages → Deploy from branch → main** for a free live link.
+1. Open https://github.com/Adityapc-cs/Dice_Roll
+2. Click the green **Code** button.
+3. Select **Download ZIP**.
+4. Right-click the downloaded ZIP file and select **Extract All**.
+5. Open the extracted folder.
+6. Double-click `index.html` to open the website in your browser.
+
