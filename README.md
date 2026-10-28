@@ -72,10 +72,15 @@ dice-roll/
 
 ## Setup
 
-1. Clone the repo: `git clone <https://adityapc-cs.github.io/Dice_Roll/>`
-2. Open `index.html` in any modern browser. That's it.
+To run this website on your computer:
 
-Optional: serve it locally with `npx serve` or the VS Code Live Server extension.
+1. Open https://github.com/Adityapc-cs/Dice_Roll
+2. Click the green **Code** button.
+3. Select **Download ZIP**.
+4. Right-click the downloaded ZIP file and select **Extract All**.
+5. Open the extracted folder.
+6. Double-click `index.html` to open the website in your browser.
+
 
 ## How the randomness is generated
 
