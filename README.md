@@ -7,11 +7,30 @@ A smooth, responsive dice roller built with plain HTML, CSS and JavaScript. No f
 ## Screenshots
 
 ### Desktop
-![Dice Roll website on desktop](ScreenShots/darkmode.png)
-![Dice Roll website on desktop](ScreenShots/lightmode.png)
+
+<table>
+  <tr>
+    <th>Dark mode</th>
+    <th>Light mode</th>
+  </tr>
+  <tr>
+    <td><img src="ScreenShots/darkmode.png" alt="Desktop dark mode" width="340"></td>
+    <td><img src="ScreenShots/lightmode.png" alt="Desktop light mode" width="340"></td>
+  </tr>
+</table>
+
 ### Mobile
-![Dice Roll website on desktop](ScreenShots/MobileLightmode.jpeg)
-![Dice Roll website on desktop](ScreenShots/MobileLightmode.jpeg)
+
+<table>
+  <tr>
+    <th>Dark mode</th>
+    <th>Light mode</th>
+  </tr>
+  <tr>
+    <td><img src="ScreenShots/MobileDarkmode.jpeg" alt="Mobile dark mode" width="180"></td>
+    <td><img src="ScreenShots/MobileLightmode.jpeg" alt="Mobile light mode" width="180"></td>
+  </tr>
+</table>
 
 ## Features
 
