@@ -1,5 +1,3 @@
-// ===== 1. GET ELEMENTS FROM THE PAGE =====
-
 // Top bar
 const soundBtn = document.getElementById("soundBtn");
 const themeBtn = document.getElementById("themeBtn");
@@ -28,7 +26,7 @@ const avgBar = document.getElementById("avgBar");
 const bars = document.querySelectorAll(".bar");
 const barCounts = document.querySelectorAll(".bar-count");
 
-// ===== 2. SETTINGS AND DATA =====
+// ===== SETTINGS AND DATA =====
 
 const MIN_DICE = 1;
 const MAX_DICE = 6;
@@ -50,27 +48,21 @@ const pipPatterns = {
   6: [0, 2, 3, 5, 6, 8],
 };
 
-// Data the program remembers (some of it is saved in the browser)
 let diceCount = Number(localStorage.getItem("diceCount")) || 2;
 if (diceCount < MIN_DICE || diceCount > MAX_DICE) diceCount = 2;
 
-let isRolling = false;                      // true while the animation runs
+let isRolling = false;                    
 let muted = localStorage.getItem("muted") === "true";
 let rollHistory = JSON.parse(localStorage.getItem("history")) || [];
 let stats = JSON.parse(localStorage.getItem("stats")) || emptyStats();
 
-// Statistics: how many times we rolled, and how often each face came up.
-// counts[0] is for the number 1, counts[1] for 2, ... counts[5] for 6.
+// Statistics
 function emptyStats() {
   return { rolls: 0, counts: [0, 0, 0, 0, 0, 0] };
 }
-
-// ===== 3. SMALL HELPERS =====
-
-// A random whole number from 1 to 6.
 // Math.random() gives 0 up to (but not including) 1.
 // Multiply by 6 -> 0 to 5.99, floor it -> 0 to 5, add 1 -> 1 to 6.
-// Every number has an equal chance.
+// And every number has an equal chance.
 function randomNumber() {
   return Math.floor(Math.random() * 6) + 1;
 }
@@ -82,14 +74,11 @@ function sumOf(values) {
   return sum;
 }
 
-// true if every number in the list is the same, e.g. [4, 4]
+// Same-Same
 function allMatch(values) {
   return values.every((v) => v === values[0]);
 }
 
-// ===== 4. DRAWING THE DICE =====
-
-// Show the right dots on one die
 function showFace(die, value) {
   for (let i = 0; i < 9; i++) {
     const hasDot = pipPatterns[value].includes(i);
@@ -97,7 +86,6 @@ function showFace(die, value) {
   }
 }
 
-// Build all the dice from scratch (each one starts on 6)
 function createDice() {
   diceArea.innerHTML = "";
   for (let i = 0; i < diceCount; i++) {
@@ -113,20 +101,15 @@ function createDice() {
   }
 }
 
-// Put the table back to how it looks when the page first opens
 function resetTable() {
   createDice();
   totalEl.textContent = "Press Roll (or the Space bar) to throw the dice";
 }
 
-// ===== 5. TEXT UNDER THE DICE =====
-
-// Add a gold message line, e.g. "Doubles!"
 function addMessage(text) {
   totalEl.innerHTML += '<span class="message">' + text + "</span>";
 }
 
-// After one roll: big total, then the numbers, then "Doubles!" if they match
 function showTotal(values) {
   const label = values.length > 1 ? "Total of " + values.join(" + ") : "You rolled";
   totalEl.innerHTML = "<strong>" + sumOf(values) + "</strong>" + label;
@@ -136,7 +119,6 @@ function showTotal(values) {
   }
 }
 
-// After many rolls at once: grand total, average, and how many rolls matched
 function showBatchTotal(allRolls) {
   let grandTotal = 0;
   let matches = 0;
@@ -156,36 +138,32 @@ function showBatchTotal(allRolls) {
   totalEl.innerHTML += "<small>The dice show the last roll</small>";
 }
 
-// ===== 6. ROLLING =====
+// ===== ROLLING =====
 
-// times = 1 for a normal roll, 10 for "Roll x10"
 function rollDice(times) {
-  if (isRolling) return;          // ignore clicks while already rolling
+  if (isRolling) return;        
   isRolling = true;
   updateButtons();
   totalEl.textContent = "Rolling...";
 
-  // Start the shake (CSS does the animation)
+  // Start the shake
   const dice = Array.from(diceArea.children);
   dice.forEach((die) => {
     die.classList.remove("landed");
     die.classList.add("rolling");
   });
 
-  // While shaking, flip through random faces
   const timer = setInterval(() => {
     dice.forEach((die) => showFace(die, randomNumber()));
     playClick();
   }, FLIP_TIME);
 
-  // When the time is up, show the real result
   setTimeout(() => finishRoll(dice, timer, times), ROLL_TIME);
 }
 
 function finishRoll(dice, timer, times) {
   clearInterval(timer);
 
-  // Roll all the dice once for each time (1 time, or 10 times)
   const allRolls = [];
   for (let r = 0; r < times; r++) {
     const values = [];
@@ -193,12 +171,11 @@ function finishRoll(dice, timer, times) {
     allRolls.push(values);
   }
 
-  // The dice on screen show the last roll
   const lastRoll = allRolls[allRolls.length - 1];
   dice.forEach((die, i) => {
     showFace(die, lastRoll[i]);
     die.classList.remove("rolling");
-    die.classList.add("landed");    // CSS plays the small pop
+    die.classList.add("landed"); 
   });
 
   if (times === 1) {
@@ -207,7 +184,7 @@ function finishRoll(dice, timer, times) {
     showBatchTotal(allRolls);
   }
 
-  // Save every roll to the history and the statistics
+  //History and the Statistics
   allRolls.forEach((values) => {
     addToHistory(values);
     addToStats(values);
@@ -218,7 +195,6 @@ function finishRoll(dice, timer, times) {
   updateButtons();
 }
 
-// Turn buttons on or off
 function updateButtons() {
   rollBtn.disabled = isRolling;
   roll10Btn.disabled = isRolling;
@@ -228,7 +204,7 @@ function updateButtons() {
   resetStatsBtn.disabled = isRolling;
 }
 
-// ===== 7. NUMBER OF DICE =====
+// ===== NUMBER OF DICE =====
 
 function updateCountText() {
   countOut.textContent = diceCount + (diceCount === 1 ? " die" : " dice");
@@ -245,7 +221,7 @@ function changeCount(change) {
   updateButtons();
 }
 
-// ===== 8. HISTORY =====
+// ===== HISTORY =====
 
 function saveHistory() {
   localStorage.setItem("history", JSON.stringify(rollHistory));
@@ -267,7 +243,7 @@ function clearHistory() {
 
 function showHistory() {
   historyList.innerHTML = "";
-  historyList.scrollTop = 0;    // jump back to the newest roll
+  historyList.scrollTop = 0;   
   rollHistory.forEach((roll) => {
     let chips = "";
     roll.values.forEach((v) => {
@@ -279,11 +255,11 @@ function showHistory() {
       '<span class="sum">= ' + roll.total + "</span>";
     historyList.appendChild(li);
   });
-  emptyMsg.hidden = rollHistory.length > 0;      // hide the message if there is history
-  clearBtn.hidden = rollHistory.length === 0;    // hide Clear if there is none
+  emptyMsg.hidden = rollHistory.length > 0;    
+  clearBtn.hidden = rollHistory.length === 0;    
 }
 
-// ===== 9. STATISTICS =====
+// ===== STATISTICS =====
 
 function saveStats() {
   localStorage.setItem("stats", JSON.stringify(stats));
@@ -304,9 +280,9 @@ function resetStats() {
 }
 
 function showStats() {
-  let diceThrown = 0;   // total number of single dice rolled
-  let faceSum = 0;      // all the face values added together
-  let biggest = 0;      // the highest count (used to scale the bars)
+  let diceThrown = 0;  
+  let faceSum = 0;     
+  let biggest = 0;    
 
   for (let i = 0; i < 6; i++) {
     const count = stats.counts[i];
@@ -317,7 +293,6 @@ function showStats() {
 
   rollCountEl.textContent = stats.rolls;
 
-  // Average per die, and the average bar (an average of 1 is empty, 6 is full)
   if (diceThrown === 0) {
     averageEl.textContent = "-";
     avgBar.style.width = "0%";
@@ -327,15 +302,15 @@ function showStats() {
     avgBar.style.width = ((average - 1) / 5) * 100 + "%";
   }
 
-  // One bar per face: the tallest is BAR_HEIGHT, the others are in proportion
+  // One bar per face
   for (let i = 0; i < 6; i++) {
     barCounts[i].textContent = stats.counts[i];
     bars[i].style.height = biggest === 0 ? "0px" : (stats.counts[i] / biggest) * BAR_HEIGHT + "px";
   }
 }
 
-// ===== 10. SOUND =====
-// No sound files needed: the browser makes the sounds itself.
+// ===== SOUND =====
+// Browser makes the sounds.
 let audioCtx = null;
 
 function playSound(wave, frequency, volume, seconds) {
@@ -377,7 +352,7 @@ function updateSoundButton() {
   soundBtn.title = muted ? "Unmute sound" : "Mute sound";
 }
 
-// ===== 11. THEME =====
+// ===== THEME =====
 
 function setTheme(theme) {
   document.documentElement.dataset.theme = theme;
@@ -386,7 +361,7 @@ function setTheme(theme) {
   localStorage.setItem("theme", theme);
 }
 
-// ===== 12. BUTTON CLICKS AND KEYS =====
+// ===== BUTTON CLICKS AND KEYS =====
 
 rollBtn.addEventListener("click", () => rollDice(1));
 roll10Btn.addEventListener("click", () => rollDice(10));
@@ -406,16 +381,15 @@ themeBtn.addEventListener("click", () => {
   setTheme(current === "dark" ? "light" : "dark");
 });
 
-// Press the Space bar to roll (ignored if a button is focused,
-// because Space already presses a focused button)
+
 document.addEventListener("keydown", (event) => {
   if (event.code === "Space" && event.target.tagName !== "BUTTON") {
-    event.preventDefault();   // stop the page from scrolling down
+    event.preventDefault();  
     rollDice(1);
   }
 });
 
-// ===== 13. START THE PAGE =====
+// ===== START THE PAGE =====
 setTheme(localStorage.getItem("theme") || "dark");
 updateSoundButton();
 updateCountText();
