@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dice Roll</title>
+  <meta name="description" content="A smooth, responsive dice roller built with HTML, CSS and vanilla JavaScript.">
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+
+    <header class="topbar">
+      <h1>Dice Roll</h1>
+      <div class="toolbar">
+        <button id="soundBtn" class="icon-btn" type="button" title="Mute sound">🔊</button>
+        <button id="themeBtn" class="icon-btn" type="button" title="Switch to light theme">☀️</button>
+      </div>
+    </header>
+
+    <section class="table">
+      <div id="diceArea" class="dice-area"></div>
+      <p id="total" class="total">Press Roll (or the Space bar) to throw the dice</p>
+    </section>
+
+    <section class="controls">
+      <div class="stepper">
+        <button id="minusBtn" type="button" title="Fewer dice">−</button>
+        <output id="countOut">2 dice</output>
+        <button id="plusBtn" type="button" title="More dice">+</button>
+      </div>
+      <button id="rollBtn" class="roll-btn" type="button">Roll</button>
+      <button id="roll10Btn" class="roll-btn roll10-btn" type="button" title="Roll 10 times at once">Roll ×10</button>
+    </section>
+
+    <section class="history">
+      <div class="history-head">
+        <h2>Last rolls</h2>
+        <button id="clearBtn" class="link-btn" type="button">Clear</button>
+      </div>
+      <ol id="historyList" class="history-list"></ol>
+      <p id="emptyMsg" class="empty">No rolls yet. Your last 10 rolls will show up here.</p>
+    </section>
+
+    <section class="stats">
+      <div class="stats-head">
+        <h2>Statistics</h2>
+        <button id="resetStatsBtn" class="link-btn" type="button">Reset</button>
+      </div>
+
+      <div class="stats-summary">
+        <span>Rolls: <strong id="rollCount">0</strong></span>
+        <span>Average per die: <strong id="average">-</strong></span>
+      </div>
+
+      <div class="avg-track">
+        <div id="avgBar" class="avg-fill"></div>
+      </div>
+      <div class="avg-scale">
+        <span>1</span>
+        <span>6</span>
+      </div>
+
+      <div class="bars">
+        <div class="bar-col">
+          <span class="bar-count">0</span>
+          <div class="bar"></div>
+          <span class="bar-label">1</span>
+        </div>
+        <div class="bar-col">
+          <span class="bar-count">0</span>
+          <div class="bar"></div>
+          <span class="bar-label">2</span>
+        </div>
+        <div class="bar-col">
+          <span class="bar-count">0</span>
+          <div class="bar"></div>
+          <span class="bar-label">3</span>
+        </div>
+        <div class="bar-col">
+          <span class="bar-count">0</span>
+          <div class="bar"></div>
+          <span class="bar-label">4</span>
+        </div>
+        <div class="bar-col">
+          <span class="bar-count">0</span>
+          <div class="bar"></div>
+          <span class="bar-label">5</span>
+        </div>
+        <div class="bar-col">
+          <span class="bar-count">0</span>
+          <div class="bar"></div>
+          <span class="bar-label">6</span>
+        </div>
+      </div>
+    </section>
+  </main>
+<script src="script.js"></script>
+</body>
+</html>

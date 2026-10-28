@@ -1,0 +1,443 @@
+/* =====================================================
+   1. COLOURS
+   Dark theme is the default. JavaScript sets
+   data-theme="light" on <html> to switch themes.
+   ===================================================== */
+:root {
+  --bg: #121212;       /* page background */
+  --table: #2e2e2e;    /* the table behind the dice */
+  --panel: #1c1c1c;    /* boxes: history, statistics, stepper */
+  --text: #f1ede0;
+  --die: #f7f2e4;      /* dice faces */
+  --pip: #1c1c1c;      /* dots on the dice */
+  --accent: #e8b04a;   /* gold: Roll button, bars, outlines */
+}
+
+:root[data-theme="light"] {
+  --bg: #ebe4d1;
+  --table: #dcdcdc;
+  --panel: #f7f3e8;
+  --text: #222222;
+  --die: #ffffff;
+  --pip: #1f2a28;
+}
+
+/* =====================================================
+   2. BASIC SETUP
+   ===================================================== */
+* {
+  box-sizing: border-box;   /* padding and border count inside the width */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Fredoka", Arial, sans-serif;
+}
+
+/* Fun font for the title and big numbers (Arial is the backup if offline) */
+h1,
+h2,
+.total strong {
+  font-family: "Bungee", Arial, sans-serif;
+  font-weight: normal;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--accent);
+}
+
+/* =====================================================
+   3. PAGE LAYOUT AND TOP BAR
+   ===================================================== */
+.app {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid gray;
+  background: var(--panel);
+  font-size: 18px;
+}
+
+/* =====================================================
+   4. THE TABLE (dice area and the total under it)
+   ===================================================== */
+.table {
+  background: var(--table);
+  border-radius: 24px;
+  padding: 30px 16px;
+  text-align: center;
+}
+
+.dice-area {
+  display: flex;
+  flex-wrap: wrap;         /* dice move to the next line if they don't fit */
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.total {
+  margin: 0;
+}
+
+.total strong {            /* the big number */
+  display: block;
+  font-size: 48px;
+}
+
+.message {                 /* "Doubles!" and "Matching dice" */
+  display: block;
+  margin-top: 8px;
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.total small {             /* "The dice show the last roll" */
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* =====================================================
+   5. THE DICE
+   Each die is a 3 x 3 grid. JavaScript turns on the
+   dots (.on) that belong to the rolled number.
+   ===================================================== */
+.die {
+  width: 90px;
+  height: 90px;
+  padding: 10px;
+  background: var(--die);
+  border-radius: 18px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  place-items: center;
+}
+
+.pip {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--pip);
+  visibility: hidden;      /* hidden dots still keep their space */
+}
+
+.pip.on {
+  visibility: visible;
+}
+
+/* =====================================================
+   6. ANIMATIONS
+   JavaScript adds .rolling while the dice shake,
+   then .landed for the small pop at the end.
+   ===================================================== */
+.rolling {
+  animation: shake 0.4s infinite;
+}
+
+.landed {
+  animation: pop 0.3s;
+}
+
+@keyframes shake {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: translateY(-15px) rotate(-15deg); }
+  50%  { transform: rotate(0deg); }
+  75%  { transform: translateY(-15px) rotate(15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes pop {
+  0%   { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* =====================================================
+   7. CONTROLS (dice count and roll buttons)
+   ===================================================== */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel);
+  border-radius: 30px;
+  padding: 4px;
+}
+
+.stepper button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 22px;
+}
+
+.stepper output {
+  min-width: 70px;
+  text-align: center;
+}
+
+.roll-btn {
+  padding: 14px 40px;
+  border: none;
+  border-radius: 30px;
+  background: var(--accent);
+  color: #2a1c00;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.roll-btn:active {
+  transform: scale(0.95);
+}
+
+/* Roll x10 is the same button, but outlined instead of filled */
+.roll10-btn {
+  padding: 12px 38px;
+  background: transparent;
+  color: var(--text);
+  border: 2px solid var(--accent);
+}
+
+/* =====================================================
+   8. HISTORY AND STATISTICS BOXES (shared look)
+   ===================================================== */
+.history,
+.stats {
+  background: var(--panel);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.history-head,
+.stats-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history h2,
+.stats h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.link-btn {                /* Clear and Reset look like links */
+  background: none;
+  border: none;
+  text-decoration: underline;
+}
+
+/* =====================================================
+   9. HISTORY LIST
+   ===================================================== */
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  max-height: 262px;       /* room for exactly 5 rows (5 x 46px + 4 x 8px gaps) */
+  overflow-y: auto;        /* the other rows appear when you scroll */
+}
+
+.history-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: var(--bg);
+  border-radius: 10px;
+}
+
+.history-list li:last-child {
+  margin-bottom: 0;
+}
+
+.faces {
+  display: flex;
+  gap: 6px;
+}
+
+.chip {                    /* a small tile for each rolled number */
+  background: var(--die);
+  color: var(--pip);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.sum {
+  font-weight: bold;
+}
+
+.empty {
+  opacity: 0.7;
+}
+
+/* Scroll bar: slim, rounded, gold (Chrome, Edge, Safari) */
+.history-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 5px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 5px;
+  border: 2px solid transparent;   /* makes the gold bar look slimmer */
+  background-clip: padding-box;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: #f5c76b;             /* lighter gold on hover */
+  background-clip: padding-box;
+}
+
+/* Firefox uses these two lines instead */
+@supports not selector(::-webkit-scrollbar) {
+  .history-list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) rgba(128, 128, 128, 0.2);
+  }
+}
+
+/* =====================================================
+   10. STATISTICS
+   ===================================================== */
+.stats-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 10px 0 12px;
+}
+
+/* Average bar: JavaScript sets the width, the transition animates it */
+.avg-track {
+  height: 14px;
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.avg-fill {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  border-radius: 7px;
+  transition: width 0.5s ease;
+}
+
+.avg-scale {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0 20px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* One bar for each face (1 to 6). JavaScript sets each bar's height. */
+.bars {
+  display: flex;
+  gap: 8px;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.bar {
+  width: 100%;
+  max-width: 40px;
+  height: 0;
+  background: var(--accent);
+  border-radius: 6px 6px 0 0;
+  transition: height 0.3s;
+}
+
+.bar-count {
+  font-size: 14px;
+}
+
+.bar-label {
+  font-weight: bold;
+}
+
+/* =====================================================
+   11. MOBILE (screens 480px wide or less)
+   ===================================================== */
+@media (max-width: 480px) {
+  .die {
+    width: 64px;
+    height: 64px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .pip {
+    width: 12px;
+    height: 12px;
+  }
+
+  .roll-btn {
+    width: 100%;
+  }
+}
