@@ -10,7 +10,8 @@ A smooth, responsive dice roller built with plain HTML, CSS and JavaScript. No f
 ![Dice Roll website on desktop](ScreenShots/darkmode.png)
 ![Dice Roll website on desktop](ScreenShots/lightmode.png)
 ### Mobile
-![Dice Roll website on mobile](screenshots/mobileview.png)
+![Dice Roll website on desktop](ScreenShots/MobileLightmode.png)
+![Dice Roll website on desktop](ScreenShots/MobileLightmode.png)
 
 ## Features
 
