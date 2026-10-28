@@ -2,7 +2,7 @@
 
 A smooth, responsive dice roller built with plain HTML, CSS and JavaScript. No frameworks, no build step.
 
-**Live demo:** _add your hosted link here (GitHub Pages / Netlify / Vercel)_
+**Live demo:** [Try Dice Roll](https://adityapc-cs.github.io/Dice_Roll/)
 
 ## Screenshots
 
@@ -52,7 +52,7 @@ dice-roll/
 
 ## Setup
 
-1. Clone the repo: `git clone <your-repo-url>`
+1. Clone the repo: `git clone <https://adityapc-cs.github.io/Dice_Roll/>`
 2. Open `index.html` in any modern browser. That's it.
 
 Optional: serve it locally with `npx serve` or the VS Code Live Server extension.
